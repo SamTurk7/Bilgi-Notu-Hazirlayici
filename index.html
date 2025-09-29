@@ -211,6 +211,9 @@
     let sahislar = [];
     let editIndex = null;
     const IMZA_KEY = "bilgiNotu_imza";
+    const SAHISLAR_KEY = "bilgiNotu_sahislar";
+    const KONU_KEY = "bilgiNotu_konu";
+    const METIN_KEY = "bilgiNotu_metin";
 
     function ekleSahis() {
       let tip = document.getElementById("tip").value;
@@ -229,6 +232,7 @@
         sahislar.push({ tip, adsoyad, dt, meslek, dy, kayit });
       }
 
+      kaydetSahislar();
       guncelleListe();
 
       document.getElementById("adsoyad").value = "";
@@ -263,7 +267,20 @@
 
     function silSahis(i) {
       sahislar.splice(i, 1);
+      kaydetSahislar();
       guncelleListe();
+    }
+
+    function kaydetSahislar() {
+      localStorage.setItem(SAHISLAR_KEY, JSON.stringify(sahislar));
+    }
+    function yukleSahislar() {
+      try {
+        const raw = localStorage.getItem(SAHISLAR_KEY);
+        if (!raw) return;
+        sahislar = JSON.parse(raw);
+        guncelleListe();
+      } catch (e) {}
     }
 
     function olustur() {
@@ -375,7 +392,24 @@
       }
     }
 
-    document.addEventListener("DOMContentLoaded", yukleImza);
+    document.getElementById("konu").addEventListener("input", function() {
+      localStorage.setItem(KONU_KEY, this.value);
+    });
+    document.getElementById("metin").addEventListener("input", function() {
+      localStorage.setItem(METIN_KEY, this.value);
+    });
+    function yukleKonuMetin() {
+      const konu = localStorage.getItem(KONU_KEY);
+      if (konu) document.getElementById("konu").value = konu;
+      const metin = localStorage.getItem(METIN_KEY);
+      if (metin) document.getElementById("metin").value = metin;
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      yukleImza();
+      yukleSahislar();
+      yukleKonuMetin();
+    });
   </script>
 
 </body>
