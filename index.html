@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Bilgi Notu Hazırlayıcı</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f3f4f6;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 30px;
+    }
+    .brand {
+      position: absolute;
+      top: 12px;
+      left: 16px;
+      font-weight: 600;
+      font-size: 18px;
+      color: #111827;
+      letter-spacing: 0.3px;
+    }
+    .container {
+      background: #fff;
+      padding: 25px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 700px;
+      text-align: center;
+      position: relative;
+    }
+    h2 {
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: #1f2937;
+    }
+    h3 {
+      font-weight: 500;
+      margin: 15px 0 10px;
+      color: #374151;
+    }
+    label {
+      display: block;
+      text-align: left;
+      margin-top: 12px;
+      font-size: 14px;
+      color: #4b5563;
+    }
+    input, textarea, select, button {
+      margin-top: 5px;
+      padding: 10px;
+      width: 100%;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      box-sizing: border-box;
+    }
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 2px rgba(59,130,246,0.2);
+    }
+    button {
+      margin-top: 15px;
+      background: #3b82f6;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+      border: none;
+    }
+    button:hover {
+      background: #2563eb;
+    }
+    .list {
+      margin-top: 15px;
+      text-align: left;
+    }
+    .person {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      padding: 8px 10px;
+      border-radius: 6px;
+      margin-bottom: 6px;
+      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
+    .actions {
+      display: flex;
+      gap: 6px;
+      visibility: hidden;
+    }
+    .person:hover .actions {
+      visibility: visible;
+    }
+    .action-btn {
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .edit-btn { color: #10b981; }
+    .delete-btn { color: #ef4444; }
+    #output {
+      white-space: pre-line;
+      border: 1px solid #e5e7eb;
+      padding: 20px;
+      margin-top: 25px;
+      background: #f9fafb;
+      border-radius: 10px;
+      text-align: left;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+    .imza {
+      border: 1px solid #e5e7eb;
+      padding: 15px;
+      margin-top: 15px;
+      border-radius: 10px;
+      background: #f9fafb;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Kodlama Samed ÖZTÜRK'e aittir. -->
+
+  <div class="container">
+    <div class="brand">Samed ÖZTÜRK</div>
+    <h2>📄 Bilgi Notu Hazırlayıcı</h2>
+
+    <!-- Başlık seçimi -->
+    <label>Başlık Seç:</label>
+    <select id="baslik">
+      <option value="valim">SAYIN VALİM</option>
+      <option value="makam">MAKAMA ARZ</option>
+    </select>
+
+    <!-- İmza bilgileri -->
+    <div class="imza">
+      <h3>✍️ İmza Bilgileri</h3>
+      <label>Vali için Ad Soyad:</label>
+      <input type="text" id="valimAd" placeholder="Ad Soyad">
+      <label>Vali için Makam:</label>
+      <input type="text" id="valimMakam" placeholder="Makam">
+
+      <label>Makama Arz için Ad Soyad:</label>
+      <input type="text" id="makamAd" placeholder="Ad Soyad">
+      <label>Makama Arz için Makam:</label>
+      <input type="text" id="makamMakam" placeholder="Makam">
+      <div id="imzaOzet" style="display:none; margin-top:10px; font-size:14px; color:#374151;"></div>
+      <div style="display:flex; gap:10px; margin-top:10px;">
+        <button type="button" id="imzaKaydetBtn" onclick="kaydetImza()">💾 İmza Bilgilerini Kaydet</button>
+        <button type="button" id="imzaDuzenleBtn" onclick="duzenleImza()" style="display:none; background:#10b981;">✏️ Düzenle</button>
+      </div>
+    </div>
+
+    <!-- Konu -->
+    <label>Konu:</label>
+    <input type="text" id="konu" placeholder="Konu giriniz">
+
+    <!-- Şahıs ekleme -->
+    <label>Şahıs Tipi:</label>
+    <select id="tip">
+      <option value="Müşteki">Müşteki</option>
+      <option value="Mağdur">Mağdur</option>
+      <option value="Müşteki/Şüpheli">Müşteki/Şüpheli</option>
+      <option value="Şüpheli">Şüpheli</option>
+      <option value="Tanık">Tanık</option>
+    </select>
+
+    <label>Ad Soyad:</label>
+    <input type="text" id="adsoyad" placeholder="Ad Soyad">
+
+    <label>Doğum Tarihi:</label>
+    <input type="text" id="dogumtarih" placeholder="1907">
+
+    <label>Meslek:</label>
+    <input type="text" id="meslek" placeholder="Meslek">
+
+    <label>Doğum Yeri:</label>
+    <input type="text" id="dogumyeri" placeholder="Doğum Yeri">
+
+    <label>Suç Kaydı:</label>
+    <input type="text" id="suckaydi" placeholder="Suç kaydı giriniz (boş bırakılırsa Kaydı Yoktur)">
+
+    <button onclick="ekleSahis()">+ Şahıs Ekle</button>
+
+    <div class="list" id="sahisListesi"></div>
+
+    <!-- Metin -->
+    <label>Metin:</label>
+    <textarea id="metin" rows="5" placeholder="Olayla ilgili metni giriniz"></textarea>
+
+  <!-- Kodlama Samed ÖZTÜRK'e aittir. -->
+
+    <button onclick="olustur()">📌 Çıktı Al</button>
+
+    <div id="output"></div>
+  </div>
+
+  <script>
+    let sahislar = [];
+    let editIndex = null;
+    const IMZA_KEY = "bilgiNotu_imza";
+
+    function ekleSahis() {
+      let tip = document.getElementById("tip").value;
+      let adsoyad = document.getElementById("adsoyad").value;
+      let dt = document.getElementById("dogumtarih").value;
+      let meslek = document.getElementById("meslek").value;
+      let dy = document.getElementById("dogumyeri").value;
+      let kayit = document.getElementById("suckaydi").value.trim() || "Kaydı Yoktur";
+
+      if (adsoyad.trim() === "") return;
+
+      if (editIndex !== null) {
+        sahislar[editIndex] = { tip, adsoyad, dt, meslek, dy, kayit };
+        editIndex = null;
+      } else {
+        sahislar.push({ tip, adsoyad, dt, meslek, dy, kayit });
+      }
+
+      guncelleListe();
+
+      document.getElementById("adsoyad").value = "";
+      document.getElementById("dogumtarih").value = "";
+      document.getElementById("meslek").value = "";
+      document.getElementById("dogumyeri").value = "";
+      document.getElementById("suckaydi").value = "";
+    }
+
+    function guncelleListe() {
+      document.getElementById("sahisListesi").innerHTML = sahislar.map((s, i) => `
+        <div class="person">
+          ${s.tip}: ${s.adsoyad} (${s.dt} - ${s.meslek} - ${s.dy}) / ${s.kayit}
+          <div class="actions">
+            <button class="action-btn edit-btn" onclick="duzenleSahis(${i})">✏️</button>
+            <button class="action-btn delete-btn" onclick="silSahis(${i})">🗑️</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function duzenleSahis(i) {
+      let s = sahislar[i];
+      document.getElementById("tip").value = s.tip;
+      document.getElementById("adsoyad").value = s.adsoyad;
+      document.getElementById("dogumtarih").value = s.dt;
+      document.getElementById("meslek").value = s.meslek;
+      document.getElementById("dogumyeri").value = s.dy;
+      document.getElementById("suckaydi").value = s.kayit === "Kaydı Yoktur" ? "" : s.kayit;
+      editIndex = i;
+    }
+
+    function silSahis(i) {
+      sahislar.splice(i, 1);
+      guncelleListe();
+    }
+
+    function olustur() {
+      let baslik = document.getElementById("baslik").value;
+      let konu = document.getElementById("konu").value;
+      let metin = document.getElementById("metin").value;
+
+      const oncelik = ["Müşteki", "Mağdur", "Müşteki/Şüpheli", "Şüpheli", "Tanık"];
+      let sirali = [];
+      oncelik.forEach(t => {
+        sahislar.filter(s => s.tip === t).forEach(s => {
+          let kayitMetin = s.kayit === "Kaydı Yoktur" ? "Kaydı Yoktur" : s.kayit + " suçlarından kaydı vardır";
+          sirali.push(`${s.tip}: <b>*${s.adsoyad}*</b> (${s.dt} - ${s.dy} - ${s.meslek})\n${kayitMetin}`);
+        });
+      });
+
+      let cikti = "";
+
+      if (baslik === "valim") {
+        cikti += "<b>*SAYIN VALİM*</b>\n\n";
+        cikti += "<b>*Çınarcık İlçe Emniyet Müdürlüğü*</b>\n\n";
+      } else {
+        cikti += "<b>*MAKAMA ARZ*</b>\n\n";
+        cikti += "<b>*Çınarcık İlçe Emniyet Müdürlüğü*</b>\n\n";
+      }
+
+      cikti += "Konu: <b>*" + konu + "*</b>\n\n";
+
+      sirali.forEach(s => {
+        cikti += s + "\n\n";
+      });
+
+      cikti += metin + "\n\n";
+      cikti += "Konu hakkında Nöbetçi Cumhuriyet Savcısına bilgi verilerek alınan talimatlar doğrultusunda İKMALEN tahkikata başlanmıştır.\n\n";
+      
+      if (baslik === "valim") {
+        let ad = document.getElementById("valimAd").value;
+        let makam = document.getElementById("valimMakam").value;
+        cikti += "<b>*Arz ederim.*</b>\n<b>*" + ad + "*</b>\n<b>*" + makam + "*</b>";
+      } else {
+        let ad = document.getElementById("makamAd").value;
+        let makam = document.getElementById("makamMakam").value;
+        cikti += "<b>*Arz ederim.*</b>\n<b>*" + ad + "*</b>\n<b>*" + makam + "*</b>";
+      }
+
+      document.getElementById("output").innerHTML = cikti;
+    }
+
+    function kaydetImza() {
+      const valimAd = document.getElementById("valimAd").value.trim();
+      const valimMakam = document.getElementById("valimMakam").value.trim();
+      const makamAd = document.getElementById("makamAd").value.trim();
+      const makamMakam = document.getElementById("makamMakam").value.trim();
+
+      const imza = { valimAd, valimMakam, makamAd, makamMakam };
+      localStorage.setItem(IMZA_KEY, JSON.stringify(imza));
+      kilitleImzaAlanlari(true, imza);
+    }
+
+    function duzenleImza() {
+      kilitleImzaAlanlari(false);
+    }
+
+    function kilitleImzaAlanlari(kilitli, imza) {
+      const ids = ["valimAd", "valimMakam", "makamAd", "makamMakam"]; 
+      ids.forEach(id => {
+        const el = document.getElementById(id);
+        el.disabled = kilitli;
+      });
+
+      const kaydetBtn = document.getElementById("imzaKaydetBtn");
+      const duzenleBtn = document.getElementById("imzaDuzenleBtn");
+      const imzaOzet = document.getElementById("imzaOzet");
+
+      if (kilitli) {
+        if (imza) {
+          document.getElementById("valimAd").value = imza.valimAd || "";
+          document.getElementById("valimMakam").value = imza.valimMakam || "";
+          document.getElementById("makamAd").value = imza.makamAd || "";
+          document.getElementById("makamMakam").value = imza.makamMakam || "";
+        }
+        kaydetBtn.style.display = "none";
+        duzenleBtn.style.display = "inline-block";
+        imzaOzet.style.display = "block";
+        const vAd = document.getElementById("valimAd").value;
+        const vMk = document.getElementById("valimMakam").value;
+        const mAd = document.getElementById("makamAd").value;
+        const mMk = document.getElementById("makamMakam").value;
+        imzaOzet.innerHTML = `Vali: <b>${vAd}</b> - <b>${vMk}</b><br>Makama Arz: <b>${mAd}</b> - <b>${mMk}</b>`;
+      } else {
+        kaydetBtn.style.display = "inline-block";
+        duzenleBtn.style.display = "none";
+        imzaOzet.style.display = "none";
+      }
+    }
+
+    function yukleImza() {
+      try {
+        const raw = localStorage.getItem(IMZA_KEY);
+        if (!raw) return;
+        const imza = JSON.parse(raw);
+        document.getElementById("valimAd").value = imza.valimAd || "";
+        document.getElementById("valimMakam").value = imza.valimMakam || "";
+        document.getElementById("makamAd").value = imza.makamAd || "";
+        document.getElementById("makamMakam").value = imza.makamMakam || "";
+        kilitleImzaAlanlari(true, imza);
+      } catch (e) {
+        // ignore parse errors
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", yukleImza);
+  </script>
+
+</body>
+</html>
