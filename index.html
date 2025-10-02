@@ -2,209 +2,502 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Bilgi Notu Hazırlayıcı</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --primary: #3b82f6;
+      --primary-dark: #2563eb;
+      --secondary: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --light: #f9fafb;
+      --dark: #1f2937;
+      --gray: #6b7280;
+      --border: #d1d5db;
+      --shadow: 0 4px 12px rgba(0,0,0,0.1);
+      --header-bg: #ffffff;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
     body {
       font-family: 'Poppins', sans-serif;
       background: #f3f4f6;
+      color: var(--dark);
+      line-height: 1.5;
+      padding: 0;
+      margin: 0;
+      min-height: 100vh;
       display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 30px;
+      flex-direction: column;
+      -webkit-text-size-adjust: 100%;
     }
+    
+    .header {
+      background: var(--header-bg);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.10);
+      padding: 18px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 3px solid #3b82f6;
+    }
+    
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
     .brand {
-      position: absolute;
-      top: 12px;
-      left: 16px;
       font-weight: 600;
       font-size: 18px;
-      color: #111827;
+      color: var(--dark);
       letter-spacing: 0.3px;
     }
-    .container {
-      background: #fff;
-      padding: 25px 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      width: 100%;
-      max-width: 700px;
-      text-align: center;
-      position: relative;
+    
+    .title {
+      font-weight: 600;
+      font-size: 20px;
+      color: var(--dark);
     }
+    
+    .container {
+      display: flex;
+      flex: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 20px;
+      gap: 20px;
+    }
+    
+    .form-container {
+      flex: 1;
+      background: #fff;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      overflow-y: auto;
+      max-height: calc(100vh - 120px);
+    }
+    
+    .preview-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      max-height: calc(100vh - 120px);
+    }
+    
+    .preview-header {
+      padding: 15px 20px;
+      background: var(--light);
+      border-bottom: 1px solid var(--border);
+      font-weight: 600;
+    }
+    
+    .preview-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+    }
+    
     h2 {
       font-weight: 600;
       margin-bottom: 20px;
-      color: #1f2937;
+      color: var(--dark);
+      font-size: 22px;
     }
+    
     h3 {
       font-weight: 500;
       margin: 15px 0 10px;
       color: #374151;
+      font-size: 18px;
     }
+    
+    .section {
+      margin-bottom: 25px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .section:last-child {
+      border-bottom: none;
+    }
+    
     label {
       display: block;
       text-align: left;
       margin-top: 12px;
       font-size: 14px;
-      color: #4b5563;
+      color: var(--gray);
+      font-weight: 500;
     }
+    
     input, textarea, select, button {
       margin-top: 5px;
-      padding: 10px;
+      padding: 12px;
       width: 100%;
-      border: 1px solid #d1d5db;
+      border: 1px solid var(--border);
       border-radius: 8px;
-      font-size: 14px;
+      font-size: 16px;
       font-family: inherit;
-      box-sizing: border-box;
+      transition: all 0.2s;
     }
+    
     input:focus, textarea:focus, select:focus {
       outline: none;
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 2px rgba(59,130,246,0.2);
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
     }
+    
     button {
       margin-top: 15px;
-      background: #3b82f6;
+      background: var(--primary);
       color: #fff;
       font-weight: 600;
       cursor: pointer;
-      transition: background 0.3s;
+      transition: all 0.3s;
       border: none;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
+    
     button:hover {
-      background: #2563eb;
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
+    
+    button.secondary {
+      background: var(--secondary);
+    }
+    
+    button.secondary:hover {
+      background: #0da271;
+    }
+    
+    button.warning {
+      background: var(--warning);
+    }
+    
+    button.warning:hover {
+      background: #d97706;
+    }
+    
+    button.danger {
+      background: var(--danger);
+    }
+    
+    button.danger:hover {
+      background: #dc2626;
+    }
+    
     .list {
       margin-top: 15px;
       text-align: left;
     }
+    
     .person {
-      background: #f9fafb;
-      border: 1px solid #e5e7eb;
-      padding: 8px 10px;
+      background: var(--light);
+      border: 1px solid var(--border);
+      padding: 12px;
       border-radius: 6px;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       font-size: 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       position: relative;
+      min-height: 44px;
     }
+    
+    .person-info {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
     .actions {
       display: flex;
-      gap: 6px;
-      visibility: hidden;
+      gap: 8px;
+      opacity: 0;
+      transition: opacity 0.2s;
+      pointer-events: none;
     }
+    
+    .person.active .actions,
+    .person:focus-within .actions,
     .person:hover .actions {
-      visibility: visible;
+      opacity: 1;
+      pointer-events: auto;
     }
+    
     .action-btn {
       border: none;
       background: transparent;
       cursor: pointer;
-      font-size: 14px;
+      font-size: 16px;
+      padding: 8px;
+      min-width: 44px;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .edit-btn { color: #10b981; }
-    .delete-btn { color: #ef4444; }
+    
+    .edit-btn { color: var(--secondary); }
+    .delete-btn { color: var(--danger); }
+    
     #output {
       white-space: pre-line;
-      border: 1px solid #e5e7eb;
+      border: 1px solid var(--border);
       padding: 20px;
-      margin-top: 25px;
-      background: #f9fafb;
+      background: var(--light);
       border-radius: 10px;
       text-align: left;
       font-size: 15px;
       line-height: 1.5;
+      flex: 1;
+      overflow-y: auto;
     }
+    
     .imza {
-      border: 1px solid #e5e7eb;
+      border: 1px solid var(--border);
       padding: 15px;
       margin-top: 15px;
       border-radius: 10px;
-      background: #f9fafb;
+      background: var(--light);
       text-align: left;
+    }
+    
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    
+    .button-group button {
+      margin-top: 0;
+    }
+    
+    .imza-ozet {
+      display: none;
+      margin-top: 10px;
+      font-size: 14px;
+      color: #374151;
+      padding: 10px;
+      background: white;
+      border-radius: 6px;
+    }
+    
+    .actions-bottom {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    
+    .actions-bottom button {
+      flex: 1;
+    }
+    
+    /* Responsive tasarım */
+    @media (max-width: 1024px) {
+      .container {
+        flex-direction: column;
+        padding: 15px;
+        gap: 15px;
+      }
+      
+      .form-container, .preview-container {
+        max-height: none;
+        width: 100%;
+      }
+      
+      .preview-container {
+        min-height: 400px;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+      }
+      
+      .container {
+        padding: 10px;
+        gap: 10px;
+      }
+      
+      .form-container {
+        padding: 20px;
+      }
+      
+      h2 {
+        font-size: 20px;
+      }
+      
+      h3 {
+        font-size: 16px;
+      }
+      
+      input, textarea, select, button {
+        font-size: 16px;
+      }
+      
+      .person {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      
+      .actions {
+        align-self: flex-end;
+        opacity: 1;
+        pointer-events: auto;
+      }
+      
+      .button-group, .actions-bottom {
+        flex-direction: column;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .form-container {
+        padding: 15px;
+      }
+      
+      .preview-content {
+        padding: 15px;
+      }
+      
+      #output {
+        padding: 15px;
+      }
+    }
+    
+    /* iOS özel stilleri */
+    @supports (-webkit-touch-callout: none) {
+      input, textarea, select {
+        font-size: 16px; /* iOS zoom'u önlemek için */
+      }
     }
   </style>
 </head>
 <body>
-
-  <!-- Kodlama Samed ÖZTÜRK'e aittir. -->
+  <div class="header">
+    <div class="header-content">
+      <div class="brand">Samed ÖZTÜRK</div>
+      <div class="title">📄 Bilgi Notu Hazırlayıcı</div>
+    </div>
+  </div>
 
   <div class="container">
-    <div class="brand">Samed ÖZTÜRK</div>
-    <h2>📄 Bilgi Notu Hazırlayıcı</h2>
+    <div class="form-container">
+      <!-- Başlık seçimi -->
+      <div class="section">
+        <label>Başlık Seç:</label>
+        <select id="baslik">
+          <option value="valim">SAYIN VALİM</option>
+          <option value="makam">MAKAMA ARZ</option>
+        </select>
+      </div>
 
-    <!-- Başlık seçimi -->
-    <label>Başlık Seç:</label>
-    <select id="baslik">
-      <option value="valim">SAYIN VALİM</option>
-      <option value="makam">MAKAMA ARZ</option>
-    </select>
+      <!-- İmza bilgileri -->
+      <div class="section">
+        <h3>✍️ İmza Bilgileri</h3>
+        <label>Vali için Ad Soyad:</label>
+        <input type="text" id="valimAd" placeholder="Ad Soyad">
+        <label>Vali için Makam:</label>
+        <input type="text" id="valimMakam" placeholder="Makam">
 
-    <!-- İmza bilgileri -->
-    <div class="imza">
-      <h3>✍️ İmza Bilgileri</h3>
-      <label>Vali için Ad Soyad:</label>
-      <input type="text" id="valimAd" placeholder="Ad Soyad">
-      <label>Vali için Makam:</label>
-      <input type="text" id="valimMakam" placeholder="Makam">
+        <label>Makama Arz için Ad Soyad:</label>
+        <input type="text" id="makamAd" placeholder="Ad Soyad">
+        <label>Makama Arz için Makam:</label>
+        <input type="text" id="makamMakam" placeholder="Makam">
+        
+        <div id="imzaOzet" class="imza-ozet"></div>
+        
+        <div class="button-group">
+          <button type="button" id="imzaKaydetBtn" onclick="kaydetImza()">💾 İmza Bilgilerini Kaydet</button>
+          <button type="button" id="imzaDuzenleBtn" onclick="duzenleImza()" class="secondary" style="display:none;">✏️ Düzenle</button>
+        </div>
+      </div>
 
-      <label>Makama Arz için Ad Soyad:</label>
-      <input type="text" id="makamAd" placeholder="Ad Soyad">
-      <label>Makama Arz için Makam:</label>
-      <input type="text" id="makamMakam" placeholder="Makam">
-      <div id="imzaOzet" style="display:none; margin-top:10px; font-size:14px; color:#374151;"></div>
-      <div style="display:flex; gap:10px; margin-top:10px;">
-        <button type="button" id="imzaKaydetBtn" onclick="kaydetImza()">💾 İmza Bilgilerini Kaydet</button>
-        <button type="button" id="imzaDuzenleBtn" onclick="duzenleImza()" style="display:none; background:#10b981;">✏️ Düzenle</button>
+      <!-- Konu -->
+      <div class="section">
+        <label>Konu:</label>
+        <input type="text" id="konu" placeholder="Konu giriniz">
+      </div>
+
+      <!-- Şahıs ekleme -->
+      <div class="section">
+        <h3>Şahıs Bilgileri</h3>
+        <label>Şahıs Tipi:</label>
+        <select id="tip">
+          <option value="Müşteki">Müşteki</option>
+          <option value="Mağdur">Mağdur</option>
+          <option value="Müşteki/Şüpheli">Müşteki/Şüpheli</option>
+          <option value="Şüpheli">Şüpheli</option>
+          <option value="Tanık">Tanık</option>
+        </select>
+
+        <label>Ad Soyad:</label>
+        <input type="text" id="adsoyad" placeholder="Ad Soyad">
+
+        <label>Doğum Tarihi:</label>
+        <input type="text" id="dogumtarih" placeholder="1907">
+
+        <label>Meslek:</label>
+        <input type="text" id="meslek" placeholder="Meslek">
+
+        <label>Doğum Yeri:</label>
+        <input type="text" id="dogumyeri" placeholder="Doğum Yeri">
+
+        <label>Suç Kaydı:</label>
+        <input type="text" id="suckaydi" placeholder="Suç kaydı giriniz (boş bırakılırsa Kaydı Yoktur)">
+
+        <button onclick="ekleSahis()">+ Şahıs Ekle</button>
+
+        <div class="list" id="sahisListesi"></div>
+      </div>
+
+      <!-- Metin -->
+      <div class="section">
+        <label>Metin:</label>
+        <textarea id="metin" rows="5" placeholder="Olayla ilgili metni giriniz"></textarea>
+      </div>
+
+      <!-- Alt Butonlar -->
+      <div class="actions-bottom">
+        <button onclick="olustur()">📌 Çıktı Al</button>
+        <button class="warning" onclick="sayfayiTemizle()">🗑️ Sayfayı Temizle</button>
       </div>
     </div>
 
-    <!-- Konu -->
-    <label>Konu:</label>
-    <input type="text" id="konu" placeholder="Konu giriniz">
-
-    <!-- Şahıs ekleme -->
-    <label>Şahıs Tipi:</label>
-    <select id="tip">
-      <option value="Müşteki">Müşteki</option>
-      <option value="Mağdur">Mağdur</option>
-      <option value="Müşteki/Şüpheli">Müşteki/Şüpheli</option>
-      <option value="Şüpheli">Şüpheli</option>
-      <option value="Tanık">Tanık</option>
-    </select>
-
-    <label>Ad Soyad:</label>
-    <input type="text" id="adsoyad" placeholder="Ad Soyad">
-
-    <label>Doğum Tarihi:</label>
-    <input type="text" id="dogumtarih" placeholder="1907">
-
-    <label>Meslek:</label>
-    <input type="text" id="meslek" placeholder="Meslek">
-
-    <label>Doğum Yeri:</label>
-    <input type="text" id="dogumyeri" placeholder="Doğum Yeri">
-
-    <label>Suç Kaydı:</label>
-    <input type="text" id="suckaydi" placeholder="Suç kaydı giriniz (boş bırakılırsa Kaydı Yoktur)">
-
-    <button onclick="ekleSahis()">+ Şahıs Ekle</button>
-
-    <div class="list" id="sahisListesi"></div>
-
-    <!-- Metin -->
-    <label>Metin:</label>
-    <textarea id="metin" rows="5" placeholder="Olayla ilgili metni giriniz"></textarea>
-
-  <!-- Kodlama Samed ÖZTÜRK'e aittir. -->
-
-    <button onclick="olustur()">📌 Çıktı Al</button>
-
-    <div id="output"></div>
+    <div class="preview-container">
+      <div class="preview-header">Önizleme</div>
+      <div class="preview-content">
+        <div id="output"></div>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -223,11 +516,15 @@
       let dy = document.getElementById("dogumyeri").value;
       let kayit = document.getElementById("suckaydi").value.trim() || "Kaydı Yoktur";
 
-      if (adsoyad.trim() === "") return;
+      if (adsoyad.trim() === "") {
+        alert("Lütfen ad soyad giriniz!");
+        return;
+      }
 
       if (editIndex !== null) {
         sahislar[editIndex] = { tip, adsoyad, dt, meslek, dy, kayit };
         editIndex = null;
+        document.querySelector('button[onclick="ekleSahis()"]').textContent = "+ Şahıs Ekle";
       } else {
         sahislar.push({ tip, adsoyad, dt, meslek, dy, kayit });
       }
@@ -235,6 +532,7 @@
       kaydetSahislar();
       guncelleListe();
 
+      // Formu temizle
       document.getElementById("adsoyad").value = "";
       document.getElementById("dogumtarih").value = "";
       document.getElementById("meslek").value = "";
@@ -243,15 +541,31 @@
     }
 
     function guncelleListe() {
-      document.getElementById("sahisListesi").innerHTML = sahislar.map((s, i) => `
-        <div class="person">
-          ${s.tip}: ${s.adsoyad} (${s.dt} - ${s.meslek} - ${s.dy}) / ${s.kayit}
+      const liste = document.getElementById("sahisListesi");
+      liste.innerHTML = sahislar.map((s, i) => `
+        <div class="person" tabindex="0">
+          <div class="person-info">
+            <strong>${s.tip}:</strong> ${s.adsoyad} (${s.dt} - ${s.meslek} - ${s.dy}) / ${s.kayit}
+          </div>
           <div class="actions">
-            <button class="action-btn edit-btn" onclick="duzenleSahis(${i})">✏️</button>
-            <button class="action-btn delete-btn" onclick="silSahis(${i})">🗑️</button>
+            <button class="action-btn edit-btn" onclick="duzenleSahis(${i})" title="Düzenle">✏️</button>
+            <button class="action-btn delete-btn" onclick="silSahis(${i})" title="Sil">🗑️</button>
           </div>
         </div>
       `).join("");
+      
+      // Kodlama Samed ÖZTÜRK'e aittir. 
+      document.querySelectorAll('.person').forEach((person, i) => {
+        person.addEventListener('touchstart', function(e) {
+          this.classList.add('active');
+        });
+        
+        person.addEventListener('touchend', function(e) {
+          setTimeout(() => {
+            this.classList.remove('active');
+          }, 500);
+        });
+      });
     }
 
     function duzenleSahis(i) {
@@ -263,30 +577,43 @@
       document.getElementById("dogumyeri").value = s.dy;
       document.getElementById("suckaydi").value = s.kayit === "Kaydı Yoktur" ? "" : s.kayit;
       editIndex = i;
+      
+      // Buton metnini değiştir
+      document.querySelector('button[onclick="ekleSahis()"]').textContent = "✓ Şahısı Güncelle";
+      
+      // Düzenlenen öğeye scroll et
+      document.getElementById("adsoyad").scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
     function silSahis(i) {
-      sahislar.splice(i, 1);
-      kaydetSahislar();
-      guncelleListe();
+      if (confirm("Bu şahsı silmek istediğinizden emin misiniz?")) {
+        sahislar.splice(i, 1);
+        kaydetSahislar();
+        guncelleListe();
+      }
     }
 
     function kaydetSahislar() {
       localStorage.setItem(SAHISLAR_KEY, JSON.stringify(sahislar));
     }
+    
     function yukleSahislar() {
       try {
         const raw = localStorage.getItem(SAHISLAR_KEY);
         if (!raw) return;
         sahislar = JSON.parse(raw);
         guncelleListe();
-      } catch (e) {}
+      } catch (e) {
+        console.error("Şahıs verileri yüklenirken hata:", e);
+      }
     }
 
     function olustur() {
       let baslik = document.getElementById("baslik").value;
       let konu = document.getElementById("konu").value;
       let metin = document.getElementById("metin").value;
+
+      // Konu zorunluluğu kaldırıldı - her durumda çıktı alınabiliyor
 
       const oncelik = ["Müşteki", "Mağdur", "Müşteki/Şüpheli", "Şüpheli", "Tanık"];
       let sirali = [];
@@ -335,9 +662,15 @@
       const makamAd = document.getElementById("makamAd").value.trim();
       const makamMakam = document.getElementById("makamMakam").value.trim();
 
+      if (!valimAd || !valimMakam || !makamAd || !makamMakam) {
+        alert("Lütfen tüm imza bilgilerini doldurunuz!");
+        return;
+      }
+
       const imza = { valimAd, valimMakam, makamAd, makamMakam };
       localStorage.setItem(IMZA_KEY, JSON.stringify(imza));
       kilitleImzaAlanlari(true, imza);
+      alert("İmza bilgileri başarıyla kaydedildi!");
     }
 
     function duzenleImza() {
@@ -369,11 +702,45 @@
         const vMk = document.getElementById("valimMakam").value;
         const mAd = document.getElementById("makamAd").value;
         const mMk = document.getElementById("makamMakam").value;
-        imzaOzet.innerHTML = `Vali: <b>${vAd}</b> - <b>${vMk}</b><br>Makama Arz: <b>${mAd}</b> - <b>${mMk}</b>`;
+        imzaOzet.innerHTML = `<strong>Vali:</strong> ${vAd} - ${vMk}<br><strong>Makama Arz:</strong> ${mAd} - ${mMk}`;
       } else {
         kaydetBtn.style.display = "inline-block";
         duzenleBtn.style.display = "none";
         imzaOzet.style.display = "none";
+      }
+    }
+
+    // Sayfayı Temizle fonksiyonu
+    function sayfayiTemizle() {
+      if (confirm("Sayfadaki veriler silinecek, emin misiniz?")) {
+        // Konu alanını temizle
+        document.getElementById("konu").value = "";
+        localStorage.removeItem(KONU_KEY);
+        
+        // Şahıs bilgilerini temizle
+        document.getElementById("adsoyad").value = "";
+        document.getElementById("dogumtarih").value = "";
+        document.getElementById("meslek").value = "";
+        document.getElementById("dogumyeri").value = "";
+        document.getElementById("suckaydi").value = "";
+        
+        // Şahıs listesini temizle
+        sahislar = [];
+        localStorage.removeItem(SAHISLAR_KEY);
+        guncelleListe();
+        
+        // Metin alanını temizle
+        document.getElementById("metin").value = "";
+        localStorage.removeItem(METIN_KEY);
+        
+        // Önizleme alanını temizle
+        document.getElementById("output").innerHTML = "";
+        
+        // Düzenleme modundan çık
+        editIndex = null;
+        document.querySelector('button[onclick="ekleSahis()"]').textContent = "+ Şahıs Ekle";
+        
+        // Başarıyla silindi uyarısı kaldırıldı
       }
     }
 
@@ -388,16 +755,18 @@
         document.getElementById("makamMakam").value = imza.makamMakam || "";
         kilitleImzaAlanlari(true, imza);
       } catch (e) {
-        // ignore parse errors
+        console.error("İmza verileri yüklenirken hata:", e);
       }
     }
 
     document.getElementById("konu").addEventListener("input", function() {
       localStorage.setItem(KONU_KEY, this.value);
     });
+    
     document.getElementById("metin").addEventListener("input", function() {
       localStorage.setItem(METIN_KEY, this.value);
     });
+    
     function yukleKonuMetin() {
       const konu = localStorage.getItem(KONU_KEY);
       if (konu) document.getElementById("konu").value = konu;
@@ -405,12 +774,26 @@
       if (metin) document.getElementById("metin").value = metin;
     }
 
+    // Sayfa yüklendiğinde çalışacak kod
     document.addEventListener("DOMContentLoaded", function() {
       yukleImza();
       yukleSahislar();
       yukleKonuMetin();
+      
+      // İlk önizlemeyi oluştur
+      olustur();
+      
+      // iOS için tüm butonlara touch event'leri ekle
+      document.querySelectorAll('button').forEach(button => {
+        button.addEventListener('touchstart', function() {
+          this.style.opacity = '0.7';
+        });
+        
+        button.addEventListener('touchend', function() {
+          this.style.opacity = '';
+        });
+      });
     });
   </script>
-
 </body>
 </html>
