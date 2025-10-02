@@ -316,6 +316,27 @@
       flex: 1;
     }
     
+    /* Kopyala bildirimi */
+    .copy-notification {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 15px 25px;
+      border-radius: 8px;
+      font-size: 16px;
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    
+    .copy-notification.show {
+      opacity: 1;
+    }
+    
     /* Responsive tasarım */
     @media (max-width: 1024px) {
       .container {
@@ -452,6 +473,7 @@
         <h3>Şahıs Bilgileri</h3>
         <label>Şahıs Tipi:</label>
         <select id="tip">
+          <option value="Ex Şahıs">Ex Şahıs</option>
           <option value="Müşteki">Müşteki</option>
           <option value="Mağdur">Mağdur</option>
           <option value="Müşteki/Şüpheli">Müşteki/Şüpheli</option>
@@ -488,6 +510,7 @@
       <!-- Alt Butonlar -->
       <div class="actions-bottom">
         <button onclick="olustur()">📌 Çıktı Al</button>
+        <button onclick="kopyalaCikti()">📋 Kopyala</button>
         <button class="warning" onclick="sayfayiTemizle()">🗑️ Sayfayı Temizle</button>
       </div>
     </div>
@@ -499,6 +522,9 @@
       </div>
     </div>
   </div>
+
+  <!-- Kopyala bildirimi -->
+  <div id="copyNotification" class="copy-notification">Kopyalandı!</div>
 
   <script>
     let sahislar = [];
@@ -615,7 +641,8 @@
 
       // Konu zorunluluğu kaldırıldı - her durumda çıktı alınabiliyor
 
-      const oncelik = ["Müşteki", "Mağdur", "Müşteki/Şüpheli", "Şüpheli", "Tanık"];
+      // Ex Şahıs en üste gelecek şekilde sıralama
+      const oncelik = ["Ex Şahıs", "Müşteki", "Mağdur", "Müşteki/Şüpheli", "Şüpheli", "Tanık"];
       let sirali = [];
       oncelik.forEach(t => {
         sahislar.filter(s => s.tip === t).forEach(s => {
@@ -654,6 +681,42 @@
       }
 
       document.getElementById("output").innerHTML = cikti;
+    }
+
+    // Kopyala fonksiyonu
+    function kopyalaCikti() {
+      const outputElement = document.getElementById("output");
+      let textToCopy = outputElement.innerText || outputElement.textContent;
+      
+      if (!textToCopy.trim()) {
+        alert("Kopyalanacak içerik bulunamadı!");
+        return;
+      }
+      
+      // Clipboard API kullanarak kopyala
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        // Başarılı kopyalama bildirimi göster
+        showCopyNotification();
+      }).catch(err => {
+        // Fallback: eski yöntem
+        const textArea = document.createElement("textarea");
+        textArea.value = textToCopy;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textArea);
+        showCopyNotification();
+      });
+    }
+
+    // Kopyalama bildirimi göster
+    function showCopyNotification() {
+      const notification = document.getElementById("copyNotification");
+      notification.classList.add("show");
+      
+      setTimeout(() => {
+        notification.classList.remove("show");
+      }, 1500);
     }
 
     function kaydetImza() {
