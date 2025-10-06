@@ -793,6 +793,7 @@
           <option value="Mağdur">Mağdur</option>
           <option value="Suça Sürüklenen Çocuk">SSÇ</option>
           <option value="Müşteki/Şüpheli">Müşteki/Şüpheli</option>
+         <option value="Müşteki/Şüpheli(Firar)">Müşteki/Şüpheli(Firar)</option>
           <option value="Şüpheli">Şüpheli</option>
           <option value="Şüpheli/Firar">Şüpheli/Firar</option>
           <option value="İntihara Teşebbüs Eden">İntihara Teşebbüs Eden</option>
@@ -877,6 +878,7 @@
       "Tehdit",
       "Hakaret",
       "Diğer Kazalar",
+      "İş Kazası", 
       "Trafik Güvenliğini Tehlikeye Sokma",
       "Mala Zarar Verme",
       "Kişilerin Huzur ve Sükununu Bozma",
@@ -892,8 +894,7 @@
       "Yağma (Gasp)",
       "6284 SKM",
       "6136 SKM",
-      "5607 SKM",
-      "İş Kazası"
+      "5607 SKM"
     ];
 
     // Tema Değiştirme Fonksiyonu
@@ -1259,7 +1260,7 @@
         konuMetni = seciliKonular.join(" - ");
       }
 
-      const oncelik = ["İntihara Teşebbüs Eden", "Ex Şahıs", "Müşteki", "Mağdur", "Suça Sürüklenen Çocuk", "Müşteki/Şüpheli", "Şüpheli", "Şüpheli/Firar", "Bilgi Sahibi"];
+      const oncelik = ["İntihara Teşebbüs Eden", "Ex Şahıs", "Müşteki", "Mağdur", "Suça Sürüklenen Çocuk", "Müşteki/Şüpheli", "Müşteki/Şüpheli(Firar)", "Şüpheli", "Şüpheli/Firar", "Bilgi Sahibi"];
       let sirali = [];
       oncelik.forEach(t => {
         sahislar.filter(s => s.tip === t).forEach(s => {
