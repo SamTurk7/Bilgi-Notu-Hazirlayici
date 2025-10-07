@@ -803,14 +803,14 @@
         <label>Ad Soyad:</label>
         <input type="text" id="adsoyad" placeholder="Ad Soyad">
 
+        <label>Doğum Yeri:</label>
+        <input type="text" id="dogumyeri" placeholder="Doğum Yeri">
+
         <label>Doğum Tarihi:</label>
         <input type="text" id="dogumtarih" placeholder="1907">
 
         <label>Meslek:</label>
         <input type="text" id="meslek" placeholder="Meslek">
-
-        <label>Doğum Yeri:</label>
-        <input type="text" id="dogumyeri" placeholder="Doğum Yeri">
 
         <label>Suç Kaydı:</label>
         <input type="text" id="suckaydi" placeholder="Suç kaydı giriniz (boş bırakılırsa Kaydı Yoktur)">
@@ -874,7 +874,7 @@
     // Hazır konular listesi
     const hazirKonular = [
       "Kasten Yaralama",
-      "Taksirle Yaralama",
+      "Taksirle Yaralaama",
       "Tehdit",
       "Hakaret",
       "Diğer Kazalar",
@@ -894,7 +894,9 @@
       "Yağma (Gasp)",
       "6284 SKM",
       "6136 SKM",
-      "5607 SKM"
+      "5607 SKM", 
+      "Yaralamalı Trafik Kazası",
+      "Maddi Hasarlı Trafik Kazası"
     ];
 
     // Tema Değiştirme Fonksiyonu
@@ -1151,9 +1153,9 @@
     function ekleSahis() {
       let tip = document.getElementById("tip").value;
       let adsoyad = document.getElementById("adsoyad").value;
+      let dy = document.getElementById("dogumyeri").value;
       let dt = document.getElementById("dogumtarih").value;
       let meslek = document.getElementById("meslek").value;
-      let dy = document.getElementById("dogumyeri").value;
       let kayit = document.getElementById("suckaydi").value.trim() || "Kaydı Yoktur";
 
       if (tip === "") {
@@ -1167,11 +1169,11 @@
       }
 
       if (editIndex !== null) {
-        sahislar[editIndex] = { tip, adsoyad, dt, meslek, dy, kayit };
+        sahislar[editIndex] = { tip, adsoyad, dy, dt, meslek, kayit };
         editIndex = null;
         document.querySelector('button[onclick="ekleSahis()"]').textContent = "+ Şahıs Ekle";
       } else {
-        sahislar.push({ tip, adsoyad, dt, meslek, dy, kayit });
+        sahislar.push({ tip, adsoyad, dy, dt, meslek, kayit });
       }
 
       kaydetSahislar();
@@ -1180,9 +1182,9 @@
       // Form alanlarını temizle ve şahıs tipini sıfırla
       resetSahisTipi();
       document.getElementById("adsoyad").value = "";
+      document.getElementById("dogumyeri").value = "";
       document.getElementById("dogumtarih").value = "";
       document.getElementById("meslek").value = "";
-      document.getElementById("dogumyeri").value = "";
       document.getElementById("suckaydi").value = "";
     }
 
@@ -1191,7 +1193,7 @@
       liste.innerHTML = sahislar.map((s, i) => `
         <div class="person" tabindex="0">
           <div class="person-info">
-            <strong>${s.tip}:</strong> ${s.adsoyad} (${s.dt} - ${s.meslek} - ${s.dy}) / ${s.kayit}
+            <strong>${s.tip}:</strong> ${s.adsoyad} (${s.dy} - ${s.dt} - ${s.meslek}) / ${s.kayit}
           </div>
           <div class="actions">
             <button class="action-btn edit-btn" onclick="duzenleSahis(${i})" title="Düzenle">✏️</button>
@@ -1217,9 +1219,9 @@
       let s = sahislar[i];
       document.getElementById("tip").value = s.tip;
       document.getElementById("adsoyad").value = s.adsoyad;
+      document.getElementById("dogumyeri").value = s.dy;
       document.getElementById("dogumtarih").value = s.dt;
       document.getElementById("meslek").value = s.meslek;
-      document.getElementById("dogumyeri").value = s.dy;
       document.getElementById("suckaydi").value = s.kayit === "Kaydı Yoktur" ? "" : s.kayit;
       editIndex = i;
       
@@ -1265,7 +1267,7 @@
       oncelik.forEach(t => {
         sahislar.filter(s => s.tip === t).forEach(s => {
           let kayitMetin = s.kayit === "Kaydı Yoktur" ? "Kaydı Yoktur" : s.kayit + " suçlarından kaydı vardır";
-          sirali.push(`${s.tip}: <b>*${s.adsoyad}*</b> (${s.dt} - ${s.dy} - ${s.meslek})\n${kayitMetin}`);
+          sirali.push(`${s.tip}: <b>*${s.adsoyad}*</b> (${s.dy} - ${s.dt} - ${s.meslek})\n${kayitMetin}`);
         });
       });
 
@@ -1397,9 +1399,9 @@
         // Şahıs bilgilerini temizle
         resetSahisTipi();
         document.getElementById("adsoyad").value = "";
+        document.getElementById("dogumyeri").value = "";
         document.getElementById("dogumtarih").value = "";
         document.getElementById("meslek").value = "";
-        document.getElementById("dogumyeri").value = "";
         document.getElementById("suckaydi").value = "";
         
         sahislar = [];
